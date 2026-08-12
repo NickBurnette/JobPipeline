@@ -1,0 +1,36 @@
+.board-wrap {
+  padding: 28px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+.board-wrap * {
+  box-sizing: border-box;
+}
+
+.board-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.01em;
+}
+
+.board-header p {
+  margin: 0 0 20px 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.board {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.board-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}

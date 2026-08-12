@@ -1,0 +1,15 @@
+.add-job-toggle {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+.add-job-toggle:hover {
+  border-color: var(--high);
+}
