@@ -96,6 +96,22 @@ body {
   color: var(--ink-soft);
 }
 
+.btn-danger {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  background: #a83b3b;
+  color: #fff;
+  border: 1px solid #a83b3b;
+}
+.btn-danger:hover {
+  background: #8f3232;
+  border-color: #8f3232;
+}
+
 /* The priority "status badge" select — shared because both the
    Add Job form and the job detail view let you set priority. */
 

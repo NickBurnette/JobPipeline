@@ -1,6 +1,7 @@
-import { useRef, type ChangeEvent } from 'react';
+import { useRef, useState, type ChangeEvent } from 'react';
 import type { Job } from '../../types';
 import { isValidJobArray } from '../../storage/jobStorage';
+import Modal from '../Modal/Modal';
 import './DataControls.css';
 
 interface DataControlsProps {
@@ -11,10 +12,15 @@ interface DataControlsProps {
 export default function DataControls({ jobs, onImport }: DataControlsProps) {
   // A ref to the actual <input type="file"> DOM node. Unlike useState,
   // updating a ref does NOT cause a re-render — it's just a persistent box
-  // to hold onto something across renders. We use it here purely to call
-  // the browser's real .click() on a file input we've hidden, so our own
+  // to hold onto something across renders. Used here purely to call
+  // the browser's real .click() on the hidden file input, so the
   // styled button can trigger the native file picker.
   const importInputRef = useRef<HTMLInputElement>(null);
+
+  // Holds the parsed, ALREADY-VALIDATED jobs from a picked file while
+  // waiting for the user to confirm. Nothing in Board's real data changes
+  // until they explicitly say yes.
+  const [pendingImport, setPendingImport] = useState<Job[] | null>(null);
 
   function handleExport() {
     const blob = new Blob([JSON.stringify(jobs, null, 2)], {
@@ -43,12 +49,20 @@ export default function DataControls({ jobs, onImport }: DataControlsProps) {
         return;
       }
 
-      onImport(parsed);
+      // Valid — but don't apply it yet. This REPLACES every job currently
+      // saved, so it needs a confirmation step.
+      setPendingImport(parsed);
     } catch {
       alert('Could not read that file — is it valid JSON?');
     } finally {
       e.target.value = ''; // reset so importing the same file again still fires onChange
     }
+  }
+
+  function confirmImport() {
+    if (!pendingImport) return;
+    onImport(pendingImport);
+    setPendingImport(null);
   }
 
   return (
@@ -62,6 +76,36 @@ export default function DataControls({ jobs, onImport }: DataControlsProps) {
         onChange={handleImportChange}
         className="data-controls-file-input"
       />
+
+      {pendingImport && (
+        <Modal onClose={() => setPendingImport(null)}>
+          <div className="import-confirm">
+            <h2 className="modal-form-title">Replace your current data?</h2>
+            <p className="import-confirm-text">
+              This file has <strong>{pendingImport.length}</strong>{' '}
+              job{pendingImport.length === 1 ? '' : 's'}. Importing it will
+              replace all <strong>{jobs.length}</strong> job
+              {jobs.length === 1 ? '' : 's'} you currently have saved. This
+              can't be undone.
+            </p>
+            <div className="modal-form-actions">
+              <button
+                type="button"
+                className="btn-danger"
+                onClick={confirmImport}
+              >
+                Replace my data
+              </button>
+              <button
+                type="button"
+                onClick={() => setPendingImport(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

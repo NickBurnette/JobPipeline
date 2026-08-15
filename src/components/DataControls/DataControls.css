@@ -21,3 +21,16 @@
 .data-controls-file-input {
   display: none;
 }
+
+.import-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.import-confirm-text {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
