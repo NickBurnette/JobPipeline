@@ -1,7 +1,7 @@
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import type { Job } from '../../types';
-import { PRIORITY_LABEL } from '../../constants';
+import { PRIORITY_LABEL, TIER_LABEL } from '../../constants';
 import './JobCard.css';
 
 interface JobCardProps {
@@ -28,11 +28,18 @@ export default function JobCard({ job, onOpenDetail }: JobCardProps) {
       onClick={() => onOpenDetail(job.id)}
     >
       <div className="job-card-top">
-        <span
-          className={`priority-dot priority-${job.priority}`}
-          title={PRIORITY_LABEL[job.priority]}
-        />
-        <span className="job-company">{job.company}</span>
+        <div className="job-card-top-left">
+          <span
+            className={`priority-dot priority-${job.priority}`}
+            title={PRIORITY_LABEL[job.priority]}
+          />
+          <span className="job-company">{job.company}</span>
+        </div>
+        {job.tier && (
+          <span className={`tier-badge tier-badge-${job.tier}`}>
+            {TIER_LABEL[job.tier]}
+          </span>
+        )}
       </div>
       <div className="job-position">{job.position}</div>
       <div className="job-meta">

@@ -16,7 +16,7 @@ import JobDetailModal from '../JobDetailModal/JobDetailModal';
 import DataControls from '../DataControls/DataControls';
 import './Board.css';
 
-type NewJobInput = Omit<Job, 'id' | 'stage'>;
+type NewJobInput = Omit<Job, 'id' | 'stage' | 'dateFound'>;
 
 export default function Board() {
   // The FUNCTION FORM of useState: `() => loadJobs() ?? JOBS` instead of
@@ -29,7 +29,7 @@ export default function Board() {
   const [jobs, setJobs] = useState<Job[]>(() => loadJobs() ?? JOBS);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
 
-  // Whenever `jobs` changes — add, edit, drag, import — write it back to localStorage. 
+  // Whenever `jobs` changes — add, edit, drag, import — write it back to localStorage.
   useEffect(() => {
     saveJobs(jobs);
   }, [jobs]);
@@ -58,7 +58,14 @@ export default function Board() {
   function handleAddJob(newJob: NewJobInput) {
     setJobs((prevJobs) => {
       const nextId = Math.max(0, ...prevJobs.map((job) => job.id)) + 1;
-      const job: Job = { ...newJob, id: nextId, stage: 'found' };
+      const job: Job = {
+        ...newJob,
+        id: nextId,
+        stage: 'found',
+        // toISOString() gives a full timestamp with time and a 'Z' suffix;
+        // slicing the first 10 characters grabs just 'YYYY-MM-DD'.
+        dateFound: new Date().toISOString().slice(0, 10),
+      };
       return [...prevJobs, job];
     });
   }
@@ -94,6 +101,10 @@ export default function Board() {
     handleStageChange(jobId, newStage);
   }
 
+  function handleDeleteJob(jobId: number) {
+    setJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
+  }
+
   // Look up the full job object from its id every render, rather than
   // storing the whole job in state — that way if a drag or the dropdown
   // changes its stage while the modal is closed, we're never showing stale data.
@@ -126,6 +137,7 @@ export default function Board() {
           job={selectedJob}
           onClose={() => setSelectedJobId(null)}
           onSave={handleUpdateJob}
+          onDelete={handleDeleteJob}
         />
       )}
     </div>

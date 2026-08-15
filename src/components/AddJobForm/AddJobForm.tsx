@@ -4,9 +4,9 @@ import { PRIORITY_OPTION_STYLE } from '../../constants';
 import Modal from '../Modal/Modal';
 import './AddJobForm.css';
 
-// The data this form collects — everything about a Job EXCEPT
-// id and stage, since those get assigned automatically on submit.
-type NewJobInput = Omit<Job, 'id' | 'stage'>;
+// The data this form collects — everything about a Job EXCEPT id, stage,
+// and dateFound (that last one gets auto-set to today when the job is added).
+type NewJobInput = Omit<Job, 'id' | 'stage' | 'dateFound'>;
 
 interface AddJobFormProps {
   onAddJob: (job: NewJobInput) => void;
@@ -18,6 +18,7 @@ const EMPTY_FORM: NewJobInput = {
   location: '',
   salary: '',
   priority: 'medium',
+  jobUrl: '',
 };
 
 export default function AddJobForm({ onAddJob }: AddJobFormProps) {
@@ -95,6 +96,14 @@ export default function AddJobForm({ onAddJob }: AddJobFormProps) {
                 placeholder="Salary range"
                 value={form.salary}
                 onChange={(e) => setForm({ ...form, salary: e.target.value })}
+              />
+            </div>
+            <div className="modal-form-row">
+              <input
+                type="url"
+                placeholder="Job posting URL (optional)"
+                value={form.jobUrl ?? ''}
+                onChange={(e) => setForm({ ...form, jobUrl: e.target.value })}
               />
             </div>
             <div className="modal-form-actions">

@@ -3,19 +3,17 @@ import type { Job, Stage } from '../types';
 
 const STORAGE_KEY = 'job-pipeline-jobs';
 
-// The list of valid stages, derived from COLUMNS rather than duplicated —
-// COLUMNS is already the single source of truth for what stages exist.
+// The list of valid stages, derived from COLUMNS
+// COLUMNS is the single source of truth for what stages exist.
 const VALID_STAGES: Stage[] = COLUMNS.map((column) => column.id);
 
-// A type guard: unlike `as Job`, this actually inspects the value at
-// runtime and returns true/false. TypeScript narrows the type to `Job`
-// whenever this returns true — it's not just telling the compiler to
-// trust us, it's proving it.
+// A type guard: unlike `as Job`, this inspects the value at
+// runtime and returns true/false. This is what lets us safely parse JSON from localStorage
 function isValidJob(value: unknown): value is Job {
   if (typeof value !== 'object' || value === null) return false;
   const job = value as Record<string, unknown>;
 
-  return (
+  const requiredFieldsValid =
     typeof job.id === 'number' &&
     typeof job.company === 'string' &&
     typeof job.position === 'string' &&
@@ -24,8 +22,20 @@ function isValidJob(value: unknown): value is Job {
     (job.priority === 'high' ||
       job.priority === 'medium' ||
       job.priority === 'low') &&
-    VALID_STAGES.includes(job.stage as Stage)
-  );
+    VALID_STAGES.includes(job.stage as Stage);
+
+  // Optional fields: valid if either ABSENT or the right type.
+  const optionalFieldsValid =
+    (job.tier === undefined ||
+      job.tier === 'stretch' ||
+      job.tier === 'target' ||
+      job.tier === 'safe') &&
+    (job.jobUrl === undefined || typeof job.jobUrl === 'string') &&
+    (job.applicationDeadline === undefined ||
+      typeof job.applicationDeadline === 'string') &&
+    (job.dateFound === undefined || typeof job.dateFound === 'string');
+
+  return requiredFieldsValid && optionalFieldsValid;
 }
 
 export function isValidJobArray(data: unknown): data is Job[] {

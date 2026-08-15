@@ -13,7 +13,7 @@
   background: var(--card-bg);
   border-radius: 12px;
   box-shadow: 0 12px 40px rgba(27, 36, 48, 0.25);
-  max-width: 420px;
+  max-width: 480px;
   width: 100%;
   padding: 20px;
 }

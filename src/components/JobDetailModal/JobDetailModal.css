@@ -18,3 +18,119 @@
   border-radius: 6px;
   padding: 4px 6px;
 }
+
+.detail-open-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--high);
+  text-decoration: none;
+  margin-top: -6px; /* pull up closer to the URL input above it */
+}
+.detail-open-link:hover {
+  text-decoration: underline;
+}
+
+.detail-date-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.detail-date-field input {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+.modal-form-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal-form-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.delete-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Always rendered — visibility is controlled by the class toggle below,
+   not by conditionally mounting/unmounting it, so the height/opacity
+   TRANSITION has something to animate FROM. */
+.delete-warning {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  font-size: 12px;
+  color: var(--ink-soft);
+  transition:
+    max-height 0.2s ease,
+    opacity 0.15s ease;
+}
+
+.delete-warning-open {
+  max-height: 24px;
+  opacity: 1;
+}
+
+.btn-danger {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  background: #a83b3b;
+  color: #fff;
+  border: 1px solid #a83b3b;
+}
+.btn-danger:hover {
+  background: #8f3232;
+  border-color: #8f3232;
+}
+
+/* These buttons genuinely mount/unmount with confirmingDelete, so a
+   keyframe ANIMATION (fires automatically on mount) is the right tool
+   here — unlike the text above, there's no "before" state to transition from. */
+.delete-confirm-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: pop-in 0.15s ease;
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.delete-confirm-buttons button:not(.btn-danger) {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--ink-soft);
+}
