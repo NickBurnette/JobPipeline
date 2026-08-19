@@ -28,10 +28,15 @@ npm run dev
 
 - [ ] Light/dark theme toggle
 - [ ] Custom-styled dropdown (replacing native `<select>` for full cross-browser styling control)
-- [ ] Drag-to-reorder within a column
+- [ ] Drag-to-reorder within a column or create sorting based on different options
 - [ ] Touch device refinement
-- [ ] Keyboard drag flow polish + screen reader announcements
 - [ ] Optional hosted account (login + database) alongside the local-only mode
+- [ ] Automated test suite (catch regressions on every change, not just manual click-through)
+- [ ] CI/CD pipeline to run those tests automatically (e.g. on every push/PR)
+- [ ] User login / authentication
+- [ ] Database for user accounts and session storage (backend prerequisite for the above)
+- [ ] Keyboard drag flow polish + screen reader announcements
+- [ ] Auto-add found jobs via a job-search integration — [JobSpy](https://github.com/speedyapply/JobSpy) is a candidate but needs more research; also needs a backend first (see above). One problem is scraping-based rather than an official API, so expected rate-limit/reliability tradeoffs
 
 ## Why this exists
 
