@@ -190,3 +190,10 @@ body {
   gap: 6px;
   flex-wrap: wrap;
 }
+
+/* Stack two-input rows vertically on narrow screens */
+@media (max-width: 480px) {
+  .modal-form-row {
+    flex-direction: column;
+  }
+}

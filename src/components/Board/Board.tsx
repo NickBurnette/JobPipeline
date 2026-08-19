@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   DndContext,
   PointerSensor,
@@ -29,10 +29,34 @@ export default function Board() {
   const [jobs, setJobs] = useState<Job[]>(() => loadJobs() ?? JOBS);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
 
+  // True only if there was NOTHING in localStorage on first load — meaning
+  // what's currently showing is the JOBS fallback, not anything the user
+  // actually entered. Drives the "you're viewing sample data" banner.
+  const [isSampleData, setIsSampleData] = useState(() => loadJobs() === null);
+
+  // A ref (not state) purely as a "have we rendered before?" flag. Using
+  // useState here would work too, but would trigger an EXTRA re-render
+  // just to update bookkeeping nobody needs to see — a ref changes silently.
+  const isFirstRender = useRef(true);
+
   // Whenever `jobs` changes — add, edit, drag, import — write it back to localStorage.
   useEffect(() => {
     saveJobs(jobs);
+
+    // Skip clearing the sample-data flag on the very first run (mount) —
+    // that run just re-saves whatever was already loaded, it isn't the
+    // user doing anything yet. Every run AFTER that means `jobs` changed
+    // because of a real action, so the sample banner should disappear.
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    } else {
+      setIsSampleData(false);
+    }
   }, [jobs]);
+
+  function handleClearSampleData() {
+    setJobs([]);
+  }
 
   // Require 8px of pointer movement before dnd-kit treats it as a drag.
   const sensors = useSensors(
@@ -116,6 +140,15 @@ export default function Board() {
         <h1>Job Pipeline</h1>
         <p>Drag a card to move it, or click one for details</p>
       </div>
+      {isSampleData && (
+        <div className="sample-banner">
+          <span>
+            You're viewing sample data — add or import your own jobs to get
+            started.
+          </span>
+          <button onClick={handleClearSampleData}>Clear sample data</button>
+        </div>
+      )}
       <div className="board-toolbar">
         <AddJobForm onAddJob={handleAddJob} />
         <DataControls jobs={jobs} onImport={setJobs} />

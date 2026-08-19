@@ -25,7 +25,7 @@ function isValidJob(value: unknown): value is Job {
     VALID_STAGES.includes(job.stage as Stage);
 
   // Optional fields: valid if either ABSENT or the right type.
-  const optionalFieldsValid =
+   const optionalFieldsValid =
     (job.tier === undefined ||
       job.tier === 'stretch' ||
       job.tier === 'target' ||
@@ -33,7 +33,11 @@ function isValidJob(value: unknown): value is Job {
     (job.jobUrl === undefined || typeof job.jobUrl === 'string') &&
     (job.applicationDeadline === undefined ||
       typeof job.applicationDeadline === 'string') &&
-    (job.dateFound === undefined || typeof job.dateFound === 'string');
+    (job.dateFound === undefined || typeof job.dateFound === 'string') &&
+    (job.resumeVersion === undefined ||
+      typeof job.resumeVersion === 'string') &&
+    (job.resumeLink === undefined || typeof job.resumeLink === 'string') &&
+    (job.notes === undefined || typeof job.notes === 'string');
 
   return requiredFieldsValid && optionalFieldsValid;
 }

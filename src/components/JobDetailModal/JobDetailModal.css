@@ -30,6 +30,18 @@
   text-decoration: underline;
 }
 
+.notes-textarea {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 8px;
+  resize: vertical; /* let the user grow it, but not shrink the layout sideways */
+  min-height: 60px;
+}
+
 .detail-date-field {
   flex: 1;
   display: flex;

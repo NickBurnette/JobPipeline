@@ -32,5 +32,50 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 4px;
+}
+
+.sample-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: rgba(91, 127, 166, 0.1);
+  border: 1px solid rgba(91, 127, 166, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.sample-banner button {
+  flex: 0 0 auto;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.sample-banner button:hover {
+  border-color: var(--high);
+}
+
+/* Mobile pass: tighten outer padding and shrink the header on small
+   screens. The board's horizontal scroll and the modal's own responsive
+   width already handle small screens reasonably on their own. */
+@media (max-width: 480px) {
+  .board-wrap {
+    padding: 16px;
+  }
+  .board-header h1 {
+    font-size: 19px;
+  }
 }

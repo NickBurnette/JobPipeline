@@ -145,6 +145,35 @@ export default function JobDetailModal({
         )}
 
         <div className="modal-form-row">
+          <input
+            type="text"
+            placeholder="Resume version (e.g. Resume_v3_Ferrovia)"
+            value={form.resumeVersion ?? ''}
+            onChange={(e) =>
+              setForm({ ...form, resumeVersion: e.target.value })
+            }
+          />
+        </div>
+        <div className="modal-form-row">
+          <input
+            type="url"
+            placeholder="Link to that resume (Drive, Dropbox, etc.)"
+            value={form.resumeLink ?? ''}
+            onChange={(e) => setForm({ ...form, resumeLink: e.target.value })}
+          />
+        </div>
+        {form.resumeLink && (
+          <a
+            href={form.resumeLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="detail-open-link"
+          >
+            Open resume ↗
+          </a>
+        )}
+
+        <div className="modal-form-row">
           <label className="detail-date-field">
             <span>Date found</span>
             <input
@@ -181,6 +210,14 @@ export default function JobDetailModal({
             ))}
           </select>
         </div>
+
+        <textarea
+          className="notes-textarea"
+          placeholder="Notes — interview questions, things to remember..."
+          value={form.notes ?? ''}
+          onChange={(e) => setForm({ ...form, notes: e.target.value })}
+          rows={3}
+        />
 
         <div className="modal-form-footer">
           <div

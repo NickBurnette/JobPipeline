@@ -24,6 +24,9 @@ export interface Job {
   jobUrl?: string;
   applicationDeadline?: string; // ISO date string, e.g. '2026-09-01'
   dateFound?: string; // ISO date string
+  resumeVersion?: string; // a label, e.g. 'Resume_v3_Ferrovia'
+  resumeLink?: string; // link to wherever the actual file lives
+  notes?: string;
 }
 
 export interface ColumnDef {
